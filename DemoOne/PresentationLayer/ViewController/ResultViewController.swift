@@ -8,14 +8,36 @@
 
 import UIKit
 
-class ResultViewController: UIViewController {
+class ResultViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
 
+    //MARK: - IBOutlets and Variables -
+    @IBOutlet weak var tblResult: UITableView!
+    var arrQuestionAnswer = [QuestionAnswerBO]()
+    
+    //MARK: - View lifecycle -
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        tblResult.tableFooterView = UIView()
         // Do any additional setup after loading the view.
     }
     
+    //MARK: - UITebleview Delegate and Datasource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return arrQuestionAnswer.count
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AnswersTableViewCell", for: indexPath) as! AnswersTableViewCell
+        cell.lblAnswer.text = "Ans : " +  (arrQuestionAnswer[indexPath.section].strSelectedOption ?? "")
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return arrQuestionAnswer[section].strQuestion
+    }
 
     /*
     // MARK: - Navigation
